@@ -26,7 +26,7 @@
 	export let showNextMessage: Function;
 	export let copyToClipboard: Function;
 
-	let showModal = False;
+	let showModal = false;
 
 	let edit = false;
 	let editedContent = '';
