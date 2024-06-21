@@ -7,6 +7,8 @@
 	import { models, settings } from '$lib/stores';
 	import Tooltip from '$lib/components/common/Tooltip.svelte';
 
+	import Modal from '$lib/components/common/Modal.svelte';
+
 	import { user as _user } from '$lib/stores';
 
 	const i18n = getContext('i18n');
@@ -23,6 +25,8 @@
 	export let showPreviousMessage: Function;
 	export let showNextMessage: Function;
 	export let copyToClipboard: Function;
+
+	let showModal = False;
 
 	let edit = false;
 	let editedContent = '';
@@ -54,7 +58,23 @@
 	const deleteMessageHandler = async () => {
 		dispatch('delete', message.id);
 	};
+	function openModal() {
+                console.log("opening modal");
+                showModal = true;
+        }                                                                                                             
+	function closeModal() {
+                console.log("Closing modal");
+                showModal = false;
+        }
 </script>
+
+<Modal show={showModal} size="md">
+        <div>
+                <h2 class="text-lg font-semibold">Document Info</h2>
+                <p>txt file stuff</p>
+                <button on:click={closeModal}>Close</button>
+        </div>
+</Modal>
 
 <div class=" flex w-full user-message" dir={$settings.chatDirection}>
 	{#if !($settings?.chatBubble ?? true)}
@@ -105,6 +125,7 @@
 										if (file?.url) {
 											window.open(file?.url, '_blank').focus();
 										}
+										openModal();
 									}}
 								>
 									<div class="p-2.5 bg-red-400 text-white rounded-lg">
