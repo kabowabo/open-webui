@@ -7,6 +7,8 @@
 	import { models, settings } from '$lib/stores';
 	import Tooltip from '$lib/components/common/Tooltip.svelte';
 
+	import Modal from '$lib/components/common/Modal.svelte';
+
 	import { user as _user } from '$lib/stores';
 
 	const i18n = getContext('i18n');
@@ -23,6 +25,10 @@
 	export let showPreviousMessage: Function;
 	export let showNextMessage: Function;
 	export let copyToClipboard: Function;
+
+	let showModal = false;
+	let currentFileContent = '';
+	let currentFileType = '';
 
 	let edit = false;
 	let editedContent = '';
@@ -54,7 +60,32 @@
 	const deleteMessageHandler = async () => {
 		dispatch('delete', message.id);
 	};
+	function openModal() {
+                console.log("opening modal");
+                showModal = true;
+        }                                                                                                             
+	function closeModal() {
+                console.log("Closing modal");
+                showModal = false;
+        }
+	function setFileContent(file.file) {
+		currentFileType = file.type;
+		currentFileContent = file.content;
+		openModal();
+	}
 </script>
+
+<Modal show={showModal} size="md" let:onClose={toggleModal}>
+    <div class="p-4">
+        <h2 class="text-lg font-semibold">File Content</h2>
+        {#if currentFileType === 'doc'}
+            <p>{currentFileContent}</p>
+        {:else if currentFileType === 'image'}
+            <img src={currentFileContent} alt="File Image" class="max-w-full h-auto" />
+        {/if}
+        <button on:click={closeModal} class="mt-4 px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300">Close</button>
+    </div>
+</Modal>
 
 <div class=" flex w-full user-message" dir={$settings.chatDirection}>
 	{#if !($settings?.chatBubble ?? true)}
@@ -105,6 +136,7 @@
 										if (file?.url) {
 											window.open(file?.url, '_blank').focus();
 										}
+										setFileContent(file.file);
 									}}
 								>
 									<div class="p-2.5 bg-red-400 text-white rounded-lg">
