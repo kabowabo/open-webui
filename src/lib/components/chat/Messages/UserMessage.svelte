@@ -69,11 +69,16 @@
 </script>
 
 <Modal show={showModal} size="md">
-        <div>
-                <h2 class="text-lg font-semibold">Document Info</h2>
-                <p>txt file stuff</p>
-                <button on:click={closeModal}>Close</button>
-        </div>
+    <div class="p-6 bg-white rounded-lg shadow-xl">
+        <h2 class="text-lg font-semibold text-gray-800 mb-4">Document Information</h2>
+        <p class="text-gray-600 mb-6">FILE CONTENTS GOES HERE</p>
+        <button 
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-colors duration-150 ease-in-out" 
+            on:click={closeModal}
+        >
+            Close
+        </button>
+    </div>
 </Modal>
 
 <div class=" flex w-full user-message" dir={$settings.chatDirection}>
